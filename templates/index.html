@@ -8,6 +8,14 @@
 
     <p>My DataMan project is working!</p>
 
-    <a href="/answer_checker">Start Game</a>
+    <form action="/answer_checker" method="get">
+    <label>Select Difficulty:</label><br><br>
+
+    <input type="radio" name="difficulty" value="easy" checked> Easy<br>
+    <input type="radio" name="difficulty" value="medium"> Medium<br>
+    <input type="radio" name="difficulty" value="hard"> Hard<br><br>
+
+    <button type="submit">Start Game</button>
+</form>
 </body>
 </html>

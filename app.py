@@ -10,12 +10,13 @@ def home():
 
 @app.route('/answer_checker', methods=['GET', 'POST'])
 def answer_checker():
-    # initialize session values
+    difficulty = request.args.get('difficulty') or session.get('difficulty', 'easy')
+    session['difficulty'] = difficulty
+
     if 'score' not in session:
         session['score'] = 0
         session['count'] = 0
 
-    # handle answer submission
     if request.method == 'POST':
         user_answer = request.form['answer'] == 'true'
         correct = session.get('correct', False)
@@ -25,7 +26,6 @@ def answer_checker():
 
         session['count'] += 1
 
-        # check if game is over
         if session['count'] >= 15:
             score = session['score']
             total = session['count']
@@ -33,15 +33,21 @@ def answer_checker():
 
             session.clear()
             return render_template(
-            'game_over.html',
-            score=score,
-            total=total,
-            accuracy=accuracy
-    )
+                'game_over.html',
+                score=score,
+                total=total,
+                accuracy=accuracy
+            )
 
-    # generate new question
-    a = random.randint(1, 20)
-    b = random.randint(1, 20)
+    if difficulty == 'easy':
+        max_num = 10
+    elif difficulty == 'medium':
+        max_num = 20
+    else:
+        max_num = 50
+
+    a = random.randint(1, max_num)
+    b = random.randint(1, max_num)
     correct = a + b
 
     if random.choice([True, False]):
@@ -55,7 +61,8 @@ def answer_checker():
         'answer_checker.html',
         question=f"{a} + {b} = {shown}",
         score=session['score'],
-        count=session['count']
+        count=session['count'],
+        difficulty=difficulty
     )
 
 if __name__ == '__main__':
