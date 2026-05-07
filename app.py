@@ -26,7 +26,7 @@ def answer_checker():
         session['count'] += 1
 
     # check if game is over
-    if session['count'] >= 5:
+    if session['count'] >= 15:
         score = session['score']
         session.clear()
         return render_template('game_over.html', score=score)
