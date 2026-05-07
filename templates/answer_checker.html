@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Answer Checker</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h3>Score: {{ score }} / {{ count }}</h3>
+<h2>{{ question }}</h2>
+
+<form method="post">
+    <button name="answer" value="true">Right</button>
+    <button name="answer" value="false">Wrong</button>
+</form>
+
+</body>
+</html>
