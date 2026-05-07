@@ -25,11 +25,19 @@ def answer_checker():
 
         session['count'] += 1
 
-    # check if game is over
-    if session['count'] >= 15:
-        score = session['score']
-        session.clear()
-        return render_template('game_over.html', score=score)
+        # check if game is over
+        if session['count'] >= 15:
+            score = session['score']
+            total = session['count']
+            accuracy = int((score / total) * 100)
+
+            session.clear()
+            return render_template(
+            'game_over.html',
+            score=score,
+            total=total,
+            accuracy=accuracy
+    )
 
     # generate new question
     a = random.randint(1, 20)
