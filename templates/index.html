@@ -3,10 +3,19 @@
 <head>
     <title>DataMan</title>
 </head>
+
+{% if session.get('user') %}
+    <p>Welcome, {{ session['user'] }}!</p>
+    <a href="/logout">Logout</a>
+{% else %}
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+{% endif %}
+
 <body>
     <h1>Welcome to DataMan</h1>
 
-    <p>My DataMan project is working!</p>
+    
 
     <form action="/answer_checker" method="get">
     <label>Select Difficulty:</label><br><br>
