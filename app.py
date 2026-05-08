@@ -17,6 +17,8 @@ def answer_checker():
         session['score'] = 0
         session['count'] = 0
         session['streak'] = 0
+        feedback = None
+        feedback_class = None
 
     if request.method == 'POST':
         user_answer = request.form['answer'] == 'true'
@@ -25,8 +27,12 @@ def answer_checker():
         if user_answer == correct:
             session['score'] += 1
             session['streak'] += 1
+            feedback = "Correct!"
+            feedback_class = "correct"
         else:
             session['streak'] = 0
+            feedback = "Incorrect. Try the next one!"
+            feedback_class = "incorrect"
 
         session['count'] += 1
 
@@ -66,7 +72,9 @@ def answer_checker():
         question=f"{a} + {b} = {shown}",
         score=session['score'],
         count=session['count'],
-        streak=session['streak']
+        streak=session['streak'],
+        feedback=feedback,
+        feedback_class=feedback_class
     )
 
 if __name__ == '__main__':

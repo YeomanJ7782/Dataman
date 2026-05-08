@@ -13,6 +13,14 @@
             margin: 10px;
             font-size: 18px;
         }
+
+        .correct {
+            color: green;
+        }
+
+        .incorrect {
+            color: red;
+        }
     </style>
 </head>
 
@@ -21,6 +29,11 @@
 <h3>Difficulty: {{ difficulty|capitalize }}</h3>
 <h3>Score: {{ score }} / {{ count }}</h3>
 <h3>🔥 Streak: {{ streak }}</h3>
+
+{% if feedback %}
+    <h3 class="{{ feedback_class }}">{{ feedback }}</h3>
+{% endif %}
+
 <h2>{{ question }}</h2>
 
 <form method="post">
