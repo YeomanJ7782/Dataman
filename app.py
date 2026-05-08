@@ -1,24 +1,66 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 import random
 
 app = Flask(__name__)
 app.secret_key = 'secret123'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dataman.db'
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
 
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = User(username=username, password=password)
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = User.query.filter_by(username=username, password=password).first()
+
+        if user:
+            session['user'] = username
+            return redirect(url_for('home'))
+
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('home'))
 
 @app.route('/answer_checker', methods=['GET', 'POST'])
 def answer_checker():
     difficulty = request.args.get('difficulty') or session.get('difficulty', 'easy')
     session['difficulty'] = difficulty
 
+    feedback = None
+    feedback_class = None
+
     if 'score' not in session:
         session['score'] = 0
         session['count'] = 0
         session['streak'] = 0
-        feedback = None
-        feedback_class = None
 
     if request.method == 'POST':
         user_answer = request.form['answer'] == 'true'
@@ -81,9 +123,13 @@ def answer_checker():
         score=session['score'],
         count=session['count'],
         streak=session['streak'],
+        difficulty=difficulty,
         feedback=feedback,
         feedback_class=feedback_class
     )
+
+with app.app_context():
+    db.create_all()
 
 if __name__ == '__main__':
     app.run(debug=True)
