@@ -16,6 +16,7 @@ def answer_checker():
     if 'score' not in session:
         session['score'] = 0
         session['count'] = 0
+        session['streak'] = 0
 
     if request.method == 'POST':
         user_answer = request.form['answer'] == 'true'
@@ -23,6 +24,9 @@ def answer_checker():
 
         if user_answer == correct:
             session['score'] += 1
+            session['streak'] += 1
+        else:
+            session['streak'] = 0
 
         session['count'] += 1
 
@@ -62,7 +66,7 @@ def answer_checker():
         question=f"{a} + {b} = {shown}",
         score=session['score'],
         count=session['count'],
-        difficulty=difficulty
+        streak=session['streak']
     )
 
 if __name__ == '__main__':
