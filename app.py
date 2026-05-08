@@ -12,6 +12,14 @@ class User(db.Model):
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
 
+class GameResult(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), nullable=False)
+    score = db.Column(db.Integer, nullable=False)
+    total = db.Column(db.Integer, nullable=False)
+    accuracy = db.Column(db.Integer, nullable=False)
+    difficulty = db.Column(db.String(20), nullable=False)
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -83,7 +91,19 @@ def answer_checker():
             total = session['count']
             accuracy = int((score / total) * 100)
 
+            result = GameResult(
+                username=session.get('user', 'Guest'),
+                score=score,
+                total=total,
+                accuracy=accuracy,
+                difficulty=session.get('difficulty', 'easy')
+            )
+
+            db.session.add(result)
+            db.session.commit()
+
             session.clear()
+
             return render_template(
                 'game_over.html',
                 score=score,
