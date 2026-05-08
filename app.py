@@ -58,7 +58,15 @@ def answer_checker():
 
     a = random.randint(1, max_num)
     b = random.randint(1, max_num)
-    correct = a + b
+
+    operation = random.choice(['+', '-', '*'])
+
+    if operation == '+':
+        correct = a + b
+    elif operation == '-':
+        correct = a - b
+    else:
+        correct = a * b
 
     if random.choice([True, False]):
         shown = correct
@@ -69,7 +77,7 @@ def answer_checker():
 
     return render_template(
         'answer_checker.html',
-        question=f"{a} + {b} = {shown}",
+        question=f"{a} {operation} {b} = {shown}",
         score=session['score'],
         count=session['count'],
         streak=session['streak'],
