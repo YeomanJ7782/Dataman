@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import random
+import time
 
 app = Flask(__name__)
 app.secret_key = 'secret123'
@@ -189,6 +190,75 @@ def dashboard():
     return render_template(
         'dashboard.html',
         results=results
+    )
+
+@app.route('/speed_round', methods=['GET', 'POST'])
+def speed_round():
+    feedback = None
+    feedback_class = None
+
+    if 'speed_start_time' not in session:
+        session['speed_start_time'] = time.time()
+        session['speed_score'] = 0
+        session['speed_count'] = 0
+
+    elapsed = int(time.time() - session['speed_start_time'])
+    time_left = max(0, 30 - elapsed)
+
+    if time_left <= 0:
+        return redirect(url_for('speed_round_game_over'))
+
+    if request.method == 'POST':
+        user_answer = int(request.form['answer'])
+        correct_answer = session.get('speed_correct_answer')
+
+        if user_answer == correct_answer:
+            session['speed_score'] += 1
+            feedback = "Correct!"
+            feedback_class = "correct"
+        else:
+            feedback = f"Incorrect! Correct answer was {correct_answer}."
+            feedback_class = "incorrect"
+
+        session['speed_count'] += 1
+
+    a = random.randint(1, 12)
+    b = random.randint(1, 12)
+    operation = random.choice(['+', '-', '*'])
+
+    if operation == '+':
+        correct_answer = a + b
+    elif operation == '-':
+        correct_answer = a - b
+    else:
+        correct_answer = a * b
+
+    session['speed_correct_answer'] = correct_answer
+
+    return render_template(
+        'speed_round.html',
+        question=f"{a} {operation} {b}",
+        score=session['speed_score'],
+        count=session['speed_count'],
+        feedback=feedback,
+        feedback_class=feedback_class,
+        time_left=time_left
+    )
+
+@app.route('/speed_round_game_over')
+def speed_round_game_over():
+    score = session.get('speed_score', 0)
+    total = session.get('speed_count', 0)
+
+    session.pop('speed_score', None)
+    session.pop('speed_count', None)
+    session.pop('speed_correct_answer', None)
+    session.pop('speed_start_time', None)
+
+    return render_template(
+        'speed_round_game_over.html',
+        score=score,
+        total=total
     )
 
 with app.app_context():
