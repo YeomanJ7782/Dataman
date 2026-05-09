@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fill It In</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+        }
+
+        input, button {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px;
+        }
+
+        .correct {
+            color: green;
+        }
+
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Fill It In</h1>
+<h3>Score: {{ score }} / {{ count }}</h3>
+
+{% if feedback %}
+    <h3 class="{{ feedback_class }}">{{ feedback }}</h3>
+{% endif %}
+
+<h2>{{ question }}</h2>
+
+<form method="post">
+    <input type="number" name="answer" required autofocus>
+    <button type="submit">Submit</button>
+</form>
+
+<br>
+<a href="/">Back Home</a>
+
+</body>
+</html>
