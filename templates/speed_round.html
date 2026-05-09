@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Speed Round</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+        }
+
+        input, button {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px;
+        }
+
+        .correct {
+            color: green;
+        }
+
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Speed Round</h1>
+<h2 id="timer">{{ time_left }}</h2>
+<h3>Score: {{ score }}</h3>
+<h3>Questions Answered: {{ count }}</h3>
+
+{% if feedback %}
+    <h3 class="{{ feedback_class }}">{{ feedback }}</h3>
+{% endif %}
+
+<h2>{{ question }} = ?</h2>
+
+<form method="post">
+    <input type="number" name="answer" required autofocus>
+    <button type="submit">Submit</button>
+</form>
+
+<br>
+<a href="/">Back Home</a>
+
+<script>
+    let timeLeft = Number("{{ time_left }}");
+
+    const timer = document.getElementById("timer");
+
+    const countdown = setInterval(() => {
+        timeLeft--;
+        timer.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            window.location.href = "/speed_round_game_over";
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>
