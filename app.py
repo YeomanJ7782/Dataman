@@ -148,6 +148,35 @@ def answer_checker():
         feedback_class=feedback_class
     )
 
+@app.route('/number_guesser', methods=['GET', 'POST'])
+def number_guesser():
+    message = None
+
+    if 'secret_number' not in session:
+        session['secret_number'] = random.randint(1, 20)
+        session['guess_count'] = 0
+
+    if request.method == 'POST':
+        guess = int(request.form['guess'])
+        session['guess_count'] += 1
+
+        if guess < session['secret_number']:
+            message = "Too low!"
+        elif guess > session['secret_number']:
+            message = "Too high!"
+        else:
+            attempts = session['guess_count']
+            session.pop('secret_number', None)
+            session.pop('guess_count', None)
+            return render_template('number_guesser.html', message=f"Correct! You guessed it in {attempts} attempts.", game_over=True)
+
+    return render_template(
+        'number_guesser.html',
+        message=message,
+        guess_count=session['guess_count'],
+        game_over=False
+    )
+
 with app.app_context():
     db.create_all()
 
