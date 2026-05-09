@@ -261,6 +261,69 @@ def speed_round_game_over():
         total=total
     )
 
+@app.route('/fill_it_in', methods=['GET', 'POST'])
+def fill_it_in():
+    feedback = None
+    feedback_class = None
+
+    if 'fill_score' not in session:
+        session['fill_score'] = 0
+        session['fill_count'] = 0
+
+    if request.method == 'POST':
+        user_answer = int(request.form['answer'])
+        correct_answer = session.get('fill_correct_answer')
+
+        if user_answer == correct_answer:
+            session['fill_score'] += 1
+            feedback = "Correct!"
+            feedback_class = "correct"
+        else:
+            feedback = f"Incorrect! Correct answer was {correct_answer}."
+            feedback_class = "incorrect"
+
+        session['fill_count'] += 1
+
+        if session['fill_count'] >= 10:
+            score = session['fill_score']
+            total = session['fill_count']
+            accuracy = int((score / total) * 100)
+
+            session.pop('fill_score', None)
+            session.pop('fill_count', None)
+            session.pop('fill_correct_answer', None)
+
+            return render_template(
+                'fill_it_in_game_over.html',
+                score=score,
+                total=total,
+                accuracy=accuracy
+            )
+
+    a = random.randint(1, 20)
+    b = random.randint(1, 20)
+    missing_position = random.choice(['first', 'second'])
+
+    if missing_position == 'first':
+        answer = a
+        total_value = a + b
+        question = f"___ + {b} = {total_value}"
+    else:
+        answer = b
+        total_value = a + b
+        question = f"{a} + ___ = {total_value}"
+
+    session['fill_correct_answer'] = answer
+
+    return render_template(
+        'fill_it_in.html',
+        question=question,
+        score=session['fill_score'],
+        count=session['fill_count'],
+        feedback=feedback,
+        feedback_class=feedback_class
+    )
+
 with app.app_context():
     db.create_all()
 
