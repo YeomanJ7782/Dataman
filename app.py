@@ -177,6 +177,20 @@ def number_guesser():
         game_over=False
     )
 
+@app.route('/dashboard')
+def dashboard():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
+    results = GameResult.query.filter_by(
+        username=session['user']
+    ).all()
+
+    return render_template(
+        'dashboard.html',
+        results=results
+    )
+
 with app.app_context():
     db.create_all()
 

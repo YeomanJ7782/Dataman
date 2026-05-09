@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+
+<h1>Your Game Results</h1>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Difficulty</th>
+        <th>Score</th>
+        <th>Total</th>
+        <th>Accuracy</th>
+    </tr>
+
+    {% for result in results %}
+    <tr>
+        <td>{{ result.difficulty }}</td>
+        <td>{{ result.score }}</td>
+        <td>{{ result.total }}</td>
+        <td>{{ result.accuracy }}%</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br><br>
+
+<a href="/">Back Home</a>
+
+</body>
+</html>
