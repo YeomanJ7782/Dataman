@@ -23,7 +23,6 @@ Solve as many math problems as possible before the timer expires.
 ### Fill It In
 Solve equations by finding the missing number.
 
----
 
 # Dashboard Features
 - Saved game results
@@ -57,6 +56,7 @@ http://127.0.0.1:5000
 
 ```bash
 git clone https://github.com/YeomanJ7782/Dataman.git
+```
 
 ## Navigate into the project folder
 
@@ -90,7 +90,7 @@ pip install flask flask-sqlalchemy
 python app.py
 ```
 
-## Open the application in a browser
+## Open the application in your browser
 
 Visit:
 
