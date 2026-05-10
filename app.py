@@ -187,9 +187,25 @@ def dashboard():
         username=session['user']
     ).all()
 
+    total_games = len(results)
+
+    if total_games > 0:
+        average_accuracy = round(
+            sum(result.accuracy for result in results) / total_games,
+            1
+        )
+
+        highest_score = max(result.score for result in results)
+    else:
+        average_accuracy = 0
+        highest_score = 0
+
     return render_template(
         'dashboard.html',
-        results=results
+        results=results,
+        total_games=total_games,
+        average_accuracy=average_accuracy,
+        highest_score=highest_score
     )
 
 @app.route('/speed_round', methods=['GET', 'POST'])
