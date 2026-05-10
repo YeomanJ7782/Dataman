@@ -52,6 +52,7 @@ Solve equations by finding the missing number.
 
 ```bash
 git clone https://github.com/YeomanJ7782/Dataman.git
+```
 
 ## Navigate into the project folder
 
