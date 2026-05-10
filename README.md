@@ -24,7 +24,6 @@ Solve as many math problems as possible before the timer expires.
 ### Fill It In
 Solve equations by finding the missing number.
 
----
 
 # Dashboard Features
 - Saved game results
@@ -53,3 +52,43 @@ Solve equations by finding the missing number.
 
 ```bash
 git clone https://github.com/YeomanJ7782/Dataman.git
+
+## Navigate into the project folder
+
+```bash
+cd Dataman
+```
+
+## Create a virtual environment
+
+```bash
+python -m venv venv
+```
+
+## Activate the virtual environment
+
+### Windows PowerShell
+
+```bash
+.\venv\Scripts\Activate.ps1
+```
+
+## Install dependencies
+
+```bash
+pip install flask flask-sqlalchemy
+```
+
+## Run the application
+
+```bash
+python app.py
+```
+
+## Open the application in your browser
+
+Visit:
+
+```text
+http://127.0.0.1:5000
+```
