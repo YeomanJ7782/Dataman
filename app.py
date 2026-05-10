@@ -103,7 +103,11 @@ def answer_checker():
             db.session.add(result)
             db.session.commit()
 
-            session.clear()
+            session.pop('score', None)
+            session.pop('count', None)
+            session.pop('streak', None)
+            session.pop('correct', None)
+            session.pop('difficulty', None)
 
             return render_template(
                 'game_over.html',

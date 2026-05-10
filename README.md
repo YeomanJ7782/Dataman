@@ -2,7 +2,6 @@
 
 DataMan is a Flask-based educational math game web application designed to make practicing math skills interactive and engaging. Users can create accounts, play multiple game modes, track performance, and view analytics through a personalized dashboard.
 
----
 
 # Features
 
@@ -47,6 +46,11 @@ Solve equations by finding the missing number.
 ---
 
 # Installation
+## Open the application
+
+Visit:
+
+http://127.0.0.1:5000
 
 ## Clone the repository
 
